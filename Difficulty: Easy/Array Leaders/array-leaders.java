@@ -42,26 +42,10 @@ class Array {
 
 // } Driver Code Ends
 
+
 class Solution {
     // Function to find the leaders in the array.
     static ArrayList<Integer> leaders(int n, int arr[]) {
-        ArrayList<Integer> list= new ArrayList<>();
-       
-        int count=0;
-         int max=Integer.MIN_VALUE;
-         
-         for(int i=n-1;i>=0;i--){
-             if(arr[i]>=max){
-                 list.add(0,arr[i]);
-                 max=arr[i];
-             }
-         }
-        
-        if(list.size()==0){
-            list.add(0);
-            
-        }
-       
-        return list;
+        // Your code here
     }
 }

@@ -1,85 +1,65 @@
 //{ Driver Code Starts
 import java.util.*;
-import java.lang.*;
-import java.io.*;
+
 class GFG {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br =
-            new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine().trim());
-        while (T-- > 0) {
-            String[] s = br.readLine().trim().split(" ");
-            int n = Integer.parseInt(s[0]);
-            int m = Integer.parseInt(s[1]);
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int tc = scanner.nextInt();
+        while (tc-- > 0) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
             char[][] grid = new char[n][m];
+
+            // Read the grid input
             for (int i = 0; i < n; i++) {
-                String[] S = br.readLine().trim().split(" ");
                 for (int j = 0; j < m; j++) {
-                    grid[i][j] = S[j].charAt(0);
+                    grid[i][j] = scanner.next().charAt(0);
                 }
             }
             Solution obj = new Solution();
-            int ans = obj.numIslands(grid);
+            int ans = obj.countIslands(grid);
             System.out.println(ans);
+            System.out.println("~");
         }
+        scanner.close();
     }
 }
+
 // } Driver Code Ends
 
 
 
 
 class Solution {
-    public int numIslands(char[][] grid) {
+    private static int[]rd = {-1,1,0,0,-1,-1,1,1};
+    private static int[]cd = {0,0,-1,1,-1,1,-1,1};
+    public int countIslands(char[][] grid) {
         // Code here
-        
+        if(grid==null||grid.length == 0){
+            return 0;
+        }
         int n = grid.length;
         int m = grid[0].length;
-        
-        int vis[][] = new int[n][m];
-        int cnt = 0;
-        for(int row = 0; row < n; row++){
-            for(int col = 0; col < m; col++){
-                if(vis[row][col] == 0 && grid[row][col] != '0'){
-                    cnt++;
-                    bfs(grid,vis,row,col,n,m);
+        int ic = 0;
+        for(int r = 0; r<n; r++){
+            for(int c = 0; c<m; c++){
+                if(grid[r][c] == 'L'){
+                    ic++;
+                    dfs(grid,r,c,n,m);
                 }
             }
         }
-        return cnt;
+        return ic;
     }
-    
-    private void bfs(char grid[][], int vis[][], int row, int col, int n, int m){
-        vis[row][col] = 1;
-        Queue<Pair> q = new LinkedList<>();
-        q.offer(new Pair(row,col));
-        
-        while(!q.isEmpty()){
-            Pair p = q.poll();  
-            int r = p.first;
-            int c = p.second;
-            
-            // to in all 8 directions
-            for(int delrow = -1; delrow <= 1; delrow++){
-                for(int delcol = -1; delcol <= 1; delcol++){
-                    int nrow = r + delrow;
-                    int ncol = c + delcol;
-                    if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && grid[nrow][ncol] != '0' && vis[nrow][ncol] == 0){
-                        vis[nrow][ncol] = 1;
-                        q.offer(new Pair(nrow, ncol));
-                    }
-                }
-            }
+    private void dfs(char[][] grid, int r, int c, int n, int m){
+        if(r<0||c<0||r>=n||c>=m||grid[r][c] != 'L'){
+            return;
         }
-    }
-    
-    class Pair{
-        int first;
-        int second;
-        
-        public Pair(int f, int s){
-            this.first = f;
-            this.second = s;
+        grid[r][c] = 'W';
+        for(int i = 0; i<8; i++){
+            int nr = r+rd[i];
+            int nc = c + cd[i];
+            dfs(grid,nr,nc,n,m);
         }
     }
 }
